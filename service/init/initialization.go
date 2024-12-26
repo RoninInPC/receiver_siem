@@ -1,4 +1,4 @@
-package service
+package init
 
 import (
 	"receiver_siem/hash"
