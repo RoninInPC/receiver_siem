@@ -3,6 +3,8 @@ package service
 import (
 	"receiver_siem/api"
 	"receiver_siem/command"
+	"receiver_siem/storagepids"
+	"receiver_siem/storagesubject"
 )
 
 type Method int
@@ -35,10 +37,7 @@ func InitApiService(address string,
 	subjects storagesubject.StorageSubjects) ApiService {
 	post := command.Post{ds, servers, subjects}
 	return ApiService{API: api.InitApi(), Address: address, Commands: []PathWork{
-		{POST, "/api/receiver", command.PostCommand{post}},
-		{POST, "/api/server", post},
-		{PATCH, "/api/server", command.Update{post}},
-		{DELETE, "api/server", command.Delete{post}},
+		{POST, "/api/alert", command.PostCommand{post}},
 	}}
 }
 
