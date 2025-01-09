@@ -3,11 +3,12 @@ package subject
 import (
 	"encoding/json"
 	"github.com/RoninInPC/gosyscalltrace"
-	"server_siem/hash"
+	"receiver_siem/hash"
 )
 
 type Syscall struct {
 	gosyscalltrace.TraceInfo
+	Username string
 }
 
 func (m Syscall) JSON() string {

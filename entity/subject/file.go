@@ -2,7 +2,7 @@ package subject
 
 import (
 	"encoding/json"
-	"server_siem/hash"
+	"receiver_siem/hash"
 	"time"
 )
 

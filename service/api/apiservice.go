@@ -3,8 +3,8 @@ package service
 import (
 	"receiver_siem/api"
 	"receiver_siem/command"
-	"receiver_siem/storagepids"
-	"receiver_siem/storagesubject"
+	"receiver_siem/entity/subject/notification/receivernotification"
+	"receiver_siem/hostinfo"
 )
 
 type Method int
@@ -31,13 +31,11 @@ type ApiService struct {
 	Commands []PathWork
 }
 
-func InitApiService(address string,
-	ds storagepids.StoragePIDs,
-	servers storageservers.StorageServers,
-	subjects storagesubject.StorageSubjects) ApiService {
-	post := command.Post{ds, servers, subjects}
+func InitApiService(address, checkHostname string,
+	channel chan receivernotification.Notification) ApiService {
+	codeName := hostinfo.GetHostInfo().CodeName
 	return ApiService{API: api.InitApi(), Address: address, Commands: []PathWork{
-		{POST, "/api/alert", command.PostCommand{post}},
+		{POST, "/" + codeName + "/api/alert", command.CommandNotification{CheckerHostName: checkHostname,Channel: channel}},
 	}}
 }
 

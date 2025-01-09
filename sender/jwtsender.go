@@ -42,11 +42,11 @@ func (j *JWTSender) Send(message subject.Message) bool {
 	return resp.StatusCode == 200
 }
 
-func InitInitializationMessage(key string, hash func(str string) string) subject.Message {
+func InitInitializationMessage() subject.Message {
 	hostInfo := hostinfo.GetHostInfo()
 	t := time.Now()
 	return subject.Message{
-		Message:     hash(key + hostInfo.HostName + t.String()),
+		Message:     hostInfo.CodeName,
 		TypeMessage: "init_receiver",
 		HostName:    hostInfo.HostName,
 		SystemOS:    hostInfo.HostOS,

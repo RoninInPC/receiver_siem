@@ -1,7 +1,7 @@
 package subject
 
 import (
-	"server_siem/hash"
+	"receiver_siem/hash"
 )
 
 type Nope struct {

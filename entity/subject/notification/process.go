@@ -2,8 +2,8 @@ package notification
 
 import (
 	"encoding/json"
-	"server_siem/entity/subject"
-	"server_siem/hash"
+	"receiver_siem/entity/subject"
+	"receiver_siem/hash"
 )
 
 type NotificationProcessEnd struct {

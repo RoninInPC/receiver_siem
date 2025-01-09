@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/bastjan/netstat"
 	"net"
-	"server_siem/hash"
+	"receiver_siem/hash"
 	"strconv"
 )
 

@@ -11,12 +11,14 @@ import (
 var (
 	hostName string
 	hostOS   string
+	codeName string
 	ips      []string
 )
 
 type HostInfo struct {
 	HostName string
 	HostOS   string
+	CodeName string
 	IPs      []string
 }
 
@@ -40,10 +42,11 @@ func (h HostInfo) Hash(hash hash.Hash) string {
 	return hash(h.JSON())
 }
 
-func HostInfoInit() {
+func HostInfoInit(key string) {
 	info, _ := host.Info()
 	hostName = info.Hostname
 	hostOS = info.OS
+	codeName = key
 	ips, _ = getLocalIPs()
 }
 
@@ -68,5 +71,6 @@ func GetHostInfo() HostInfo {
 	return HostInfo{
 		hostName,
 		hostOS,
+		codeName,
 		ips}
 }

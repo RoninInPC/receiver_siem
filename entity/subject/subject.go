@@ -1,6 +1,6 @@
 package subject
 
-import "server_siem/hash"
+import "receiver_siem/hash"
 
 type SubjectType int
 

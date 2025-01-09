@@ -8,6 +8,7 @@ import (
 )
 
 type Message struct {
+	Token       string
 	Message     string
 	TypeMessage string
 	HostName    string
@@ -19,11 +20,13 @@ type Message struct {
 }
 
 func InitMessage(
+	token string,
 	message string,
 	typeMessage string,
 	hostInfo hostinfo.HostInfo,
 	subject Subject) Message {
 	return Message{
+		token,
 		message,
 		typeMessage,
 		hostInfo.HostName,
