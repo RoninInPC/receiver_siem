@@ -2,38 +2,33 @@ package analysis
 
 import (
 	"receiver_siem/entity/subject/notification/receivernotification"
+	"receiver_siem/storageuser"
+	"receiver_siem/telegramsender"
 	"sort"
+	"strconv"
 	"sync"
 	"time"
 )
 
-type Notifications []receivernotification.Notification
-
-func (n Notifications) Len() int {
-	return len(n)
-}
-
-func (n Notifications) Less(i, j int) bool {
-	return n[i].GetTime().Before(n[j].GetTime())
-}
-
-func (n Notifications) Swap(i, j int) {
-	c := n[i]
-	n[i] = n[j]
-	n[j] = c
-}
-
 type Analysis struct {
 	channel chan receivernotification.Notification
 	sync.Mutex
-	notifications Notifications
+	notifications receivernotification.Notifications
+	storageUsers  storageuser.StorageUser
+	sender        telegramsender.TelegramSender[string]
 	duration      time.Duration
 }
 
-func Init(channel chan receivernotification.Notification, duration time.Duration) *Analysis {
+func Init(
+	channel chan receivernotification.Notification,
+	storageUsers storageuser.StorageUser,
+	sender telegramsender.TelegramSender[string],
+	duration time.Duration) *Analysis {
 	return &Analysis{channel: channel,
 		Mutex:         sync.Mutex{},
-		notifications: make(Notifications, 0),
+		notifications: make(receivernotification.Notifications, 0),
+		storageUsers:  storageUsers,
+		sender:        sender,
 		duration:      duration,
 	}
 }
@@ -48,12 +43,17 @@ func (a Analysis) Work() {
 	}()
 	for {
 		a.Lock()
-		c := make(Notifications, len(a.notifications))
+		c := make(receivernotification.Notifications, len(a.notifications))
 		copy(a.notifications, c)
-		a.notifications = make(Notifications, 0)
+		a.notifications = make(receivernotification.Notifications, 0)
 		a.Unlock()
-
 		sort.Sort(c)
+		for _, message := range a.notifications.SortByHost().ToTelegramString() {
+			for _, user := range a.storageUsers.GetUsers() {
+				id, _ := strconv.ParseInt(user.UserId, 10, 64)
+				a.sender.Send(id, message)
+			}
+		}
 
 		time.Sleep(a.duration)
 	}

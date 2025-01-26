@@ -176,3 +176,79 @@ func JsonedToNotification(jsoned string, subjectType subject.SubjectType) Notifi
 	}
 	return nil
 }
+
+type Notifications []Notification
+
+func (n Notifications) Len() int {
+	return len(n)
+}
+
+func (n Notifications) Less(i, j int) bool {
+	return n[i].GetTime().Before(n[j].GetTime()) && n[i].GetHostName() < n[j].GetHostName()
+}
+
+func (n Notifications) Swap(i, j int) {
+	c := n[i]
+	n[i] = n[j]
+	n[j] = c
+}
+
+type NotificationsByHost map[string]Notifications
+
+func (n Notifications) SortByHost() NotificationsByHost {
+	answer := make(map[string]Notifications)
+	for _, part := range n {
+		if _, ok := answer[part.GetHostName()]; !ok {
+			answer[part.GetHostName()] = make(Notifications, 0)
+		} else {
+			answer[part.GetHostName()] = append(answer[part.GetHostName()], part)
+		}
+	}
+	return answer
+}
+
+func (n NotificationsByHost) ToString() string {
+	answer := ""
+	for host, notifications := range n {
+		answer += host + ":\n"
+		for _, n := range notifications {
+			answer += "\t" + n.Name() + ";\n"
+		}
+	}
+	return answer
+}
+
+const (
+	TelegramMessageConst = 4096
+)
+
+func (n NotificationsByHost) ToTelegramString() []string {
+	answer := make([]string, 0)
+	part := ""
+	for host, notifications := range n {
+		part += host + ":\n"
+		for _, n := range notifications {
+			sum := "\t" + n.Name() + ";\n"
+			if len(part)+len(sum)+6 > TelegramMessageConst {
+				answer = append(answer, part)
+				part = sum
+			} else {
+				part += sum
+			}
+		}
+	}
+	for i, p := range answer {
+		switch i {
+		case 0:
+			p += "..."
+			break
+		case len(answer) - 1:
+			p = "..." + p
+			break
+		default:
+			p = "..." + p + "..."
+			break
+		}
+	}
+	return answer
+}

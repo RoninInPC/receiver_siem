@@ -16,3 +16,12 @@ func (t TelegramSimple) Send(id int64, message string) bool {
 	_, err := t.api.Send(msg)
 	return err == nil
 }
+
+func (t TelegramSimple) SendSeveral(id int64, messages []string) bool {
+	for _, message := range messages {
+		if !t.Send(id, message) {
+			return false
+		}
+	}
+	return true
+}
