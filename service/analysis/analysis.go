@@ -48,7 +48,7 @@ func (a Analysis) Work() {
 		a.notifications = make(receivernotification.Notifications, 0)
 		a.Unlock()
 		sort.Sort(c)
-		for _, message := range a.notifications.SortByHost().ToTelegramString() {
+		for _, message := range c.SortByHost().ToTelegramString() {
 			for _, user := range a.storageUsers.GetUsers() {
 				id, _ := strconv.ParseInt(user.UserId, 10, 64)
 				a.sender.Send(id, message)

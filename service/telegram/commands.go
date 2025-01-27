@@ -2,6 +2,7 @@ package telegram
 
 import (
 	telemux "github.com/and3rson/telemux/v2"
+	"receiver_siem/command"
 	"strings"
 )
 
@@ -9,7 +10,7 @@ type Command struct {
 	Name        string
 	Description string
 	Filter      telemux.FilterFunc
-	Action      Action
+	Action      command.TelegramAction
 }
 
 type Commands []Command

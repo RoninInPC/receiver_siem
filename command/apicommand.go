@@ -27,10 +27,12 @@ func (action CommandNotification) Action(g *gin.Context) {
 	log.Println(string(body))
 	jsoned := string(body)
 	jsoned = strings.Replace(jsoned, "%7B", "{", -1)
+	jsoned = strings.Replace(jsoned, "%5B", "[", -1)
 	jsoned = strings.Replace(jsoned, "%22", "\"", -1)
 	jsoned = strings.Replace(jsoned, "%3A", ":", -1)
 	jsoned = strings.Replace(jsoned, "%2C", ",", -1)
 	jsoned = strings.Replace(jsoned, "%7D", "}", -1)
+	jsoned = strings.Replace(jsoned, "%5D", "]", -1)
 	jsoned = strings.Replace(jsoned, "json=", "", -1)
 	m := subject.Message{}
 	json.Unmarshal([]byte(jsoned), &m)

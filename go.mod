@@ -3,7 +3,7 @@ module receiver_siem
 go 1.23.2
 
 require (
-	github.com/RoninInPC/gosyscalltrace v1.0.3
+	github.com/RoninInPC/gosyscalltrace v1.0.4
 	github.com/and3rson/telemux/v2 v2.0.2
 	github.com/bastjan/netstat v1.0.0
 	github.com/deatil/go-md6 v1.0.0
@@ -12,6 +12,7 @@ require (
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/sergi/go-diff v1.3.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
+	gopkg.in/ini.v1 v1.67.0
 )
 
 require (
