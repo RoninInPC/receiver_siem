@@ -238,6 +238,7 @@ func (n NotificationsByHost) ToTelegramString() []string {
 				part += sum
 			}
 		}
+		answer = append(answer, part)
 	}
 	for i, p := range answer {
 		switch i {
