@@ -32,9 +32,11 @@ func (s StartTelegram) Action(u *tm.Update) {
 	text := strings.Split(message.Text, " ")
 	if len(text) < 2 {
 		s.Sender.Send(updatetelegram.GetUserId(u), WrongStart)
+		return
 	}
 	if text[1] != s.StartPassString {
 		s.Sender.Send(updatetelegram.GetUserId(u), WrongStart)
+		return
 	}
 	idString := strconv.FormatInt(message.From.ID, 10)
 	if !s.StorageUser.Contains(idString) {

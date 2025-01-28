@@ -1,4 +1,4 @@
-package init
+package initialization
 
 import (
 	"receiver_siem/sender"

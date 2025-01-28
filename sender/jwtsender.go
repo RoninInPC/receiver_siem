@@ -32,7 +32,7 @@ func InitJWTSender(hostSubject string) *JWTSender {
 		}}
 }
 
-func (j *JWTSender) Send(message subject.Message) bool {
+func (j JWTSender) Send(message subject.Message) bool {
 	resp, err := j.methods[message.TypeMessage].Command(Message{token.GetToken(), message}.JSON())
 	if err != nil {
 		return false

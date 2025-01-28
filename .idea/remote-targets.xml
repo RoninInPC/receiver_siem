@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="masterpease@chuvakov-sandbox.p.nvfn.ru:2222" type="ssh/sftp" uuid="b0a791aa-6da6-4ca3-b483-70041c4936ef">
+        <config>
+          <option name="projectRootOnTarget" value="/home/masterpease/receiver_siem" />
+          <option name="serverName" value="masterpease@chuvakov-sandbox.p.nvfn.ru:2222 password" />
+        </config>
+        <ContributedStateBase type="GoLanguageRuntime">
+          <config>
+            <option name="goPath" value="/home/masterpease/go" />
+            <option name="goRoot" value="/usr/bin/go" />
+            <option name="goVersion" value="go1.19.8 linux/amd64" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

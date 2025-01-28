@@ -6,6 +6,7 @@ import (
 	"receiver_siem/entity/subject"
 	"receiver_siem/entity/subject/notification"
 	"receiver_siem/hostinfo"
+	"strings"
 	"time"
 )
 
@@ -144,6 +145,7 @@ func unmarshal[A any](jsoned string) A {
 }
 
 func JsonedToNotification(jsoned string, subjectType subject.SubjectType) Notification {
+	jsoned = strings.Replace(jsoned, "\\\"", "\"", -1)
 	switch subjectType {
 	case FileChangeT:
 		return unmarshal[FileUpdate](jsoned)

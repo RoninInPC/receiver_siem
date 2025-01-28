@@ -4,7 +4,7 @@ import (
 	"receiver_siem/entity/subject/notification/receivernotification"
 	"receiver_siem/storageuser"
 	"receiver_siem/telegramsender"
-	"sort"
+	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -23,8 +23,8 @@ func Init(
 	channel chan receivernotification.Notification,
 	storageUsers storageuser.StorageUser,
 	sender telegramsender.TelegramSender[string],
-	duration time.Duration) *Analysis {
-	return &Analysis{channel: channel,
+	duration time.Duration) Analysis {
+	return Analysis{channel: channel,
 		Mutex:         sync.Mutex{},
 		notifications: make(receivernotification.Notifications, 0),
 		storageUsers:  storageUsers,
@@ -43,11 +43,9 @@ func (a Analysis) Work() {
 	}()
 	for {
 		a.Lock()
-		c := make(receivernotification.Notifications, len(a.notifications))
-		copy(a.notifications, c)
+		c := slices.Clone(a.notifications)
 		a.notifications = make(receivernotification.Notifications, 0)
 		a.Unlock()
-		sort.Sort(c)
 		for _, message := range c.SortByHost().ToTelegramString() {
 			for _, user := range a.storageUsers.GetUsers() {
 				id, _ := strconv.ParseInt(user.UserId, 10, 64)

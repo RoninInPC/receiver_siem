@@ -1,4 +1,4 @@
-package usertable
+package redisusers
 
 import (
 	"encoding/json"
